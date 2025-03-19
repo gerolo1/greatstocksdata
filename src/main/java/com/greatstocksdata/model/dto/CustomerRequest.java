@@ -1,15 +1,15 @@
 package com.greatstocksdata.model.dto;
 
-import com.greatstocksdata.model.entity.User;
+import com.greatstocksdata.model.entity.Customer;
 import lombok.Data;
 
 @Data
-public class UserRequest {
+public class CustomerRequest {
     private String username;
     private String password;
 
-    public User toEntity() {
-        User user = new User();
+    public Customer toEntity() {
+        Customer user = new Customer();
 
         user.setUsername(getUsername());
         user.setPassword(getPassword());

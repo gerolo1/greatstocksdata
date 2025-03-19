@@ -2,10 +2,10 @@ package com.greatstocksdata.service.impl;
 
 import com.greatstocksdata.utils.PasswordUtils;
 import com.greatstocksdata.utils.jwt.JwtUtil;
-import com.greatstocksdata.model.dto.UserRequest;
-import com.greatstocksdata.model.entity.User;
-import com.greatstocksdata.repository.UserRepository;
-import com.greatstocksdata.service.UserService;
+import com.greatstocksdata.model.dto.CustomerRequest;
+import com.greatstocksdata.model.entity.Customer;
+import com.greatstocksdata.repository.CustomerRepository;
+import com.greatstocksdata.service.CustomerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -18,17 +18,17 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Log4j2
-public class UserServiceImpl implements UserService {
+public class CustomerServiceImpl implements CustomerService {
 
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
     private final JwtUtil jwtUtil;
 
     @Override
-    public ResponseEntity<HashMap<String, String>> login(UserRequest payload) {
+    public ResponseEntity<HashMap<String, String>> login(CustomerRequest payload) {
         log.info("INIT: UserServiceImpl - login - {}", payload.getUsername());
 
         log.info("INIT: UserRepository - findByUsername");
-        Optional<User> user = userRepository.findByUsername(payload.getUsername());
+        Optional<Customer> user = customerRepository.findByUsername(payload.getUsername());
         log.info("END: UserRepository - findByUsername");
 
         if(user.isPresent() && PasswordUtils.validatePassword(payload.getPassword(), user.get().getPassword())) {
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<HashMap<String, String>> register(UserRequest payload) {
+    public ResponseEntity<HashMap<String, String>> register(CustomerRequest payload) {
         log.info("INIT: UserServiceImpl - register - {}", payload.getUsername());
 
         if(payload.getUsername() == null || payload.getUsername().isEmpty()) {
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
         payload.setPassword(PasswordUtils.hashPassword(payload.getPassword()));
 
-        userRepository.save(payload.toEntity());
+        customerRepository.save(payload.toEntity());
 
         log.info("END: UserServiceImpl - register - {}", payload.getUsername());
 
